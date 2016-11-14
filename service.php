@@ -1,28 +1,20 @@
 <?php
 require_once "nusoap.php";
-//$mysql_client = new nusoap_client("http://10.30.2.28/mysql.php?wsdl", true);
-//$rez = 123;
-//$mysql_client->call("checkService", array("para" => $rez));
-
 
 function checkService($mean, $stdev) {
 	return normalDistribution($mean, $stdev);
 }
 
 function normalDistribution($mean, $stdev) {
-	$max = $stdev*4;
 	$pre = 1/($stdev*sqrt(2*pi()));
 	$ukupno = array();
 	$ukupno[] = $mean;
 	$ukupno[] = $stdev;
-	for ($i = -$max; $i <= $max; $i++) {
+	for ($i = -2+$mean; $i <= 2+$mean; $i+=0.1) {
 		$ukupno[] = $pre * exp(-pow($i-$mean,2)/(2*pow($stdev,2)));
 	}
 	return $ukupno;
 }
-
-//$rez = normalDistribution($mean, $stdev);
-//$mysql_client->call("checkService", array("para" => $rez));
 
 $server = new soap_server();
 $server->configureWSDL("status", "urn:status");
@@ -47,4 +39,3 @@ $server->register("checkService",
     "Check if service is working by passing your name");
 
 $server->service($HTTP_RAW_POST_DATA);
-?>
