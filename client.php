@@ -1,6 +1,7 @@
 <?php
 require_once "nusoap.php";
 require_once "phplot.php";
+
 $servis1 = new nusoap_client("http://10.30.2.26/service.php?wsdl", true);
 $servis2 = new nusoap_client("http://10.30.2.30/mysql.php?wsdl", true);
 $servis3 = new nusoap_client("http://10.30.2.31/graph.php?wsdl", true);
@@ -72,7 +73,14 @@ for($i = -2+$mean; $i<=2+$mean;$i+=0.1){
 	$x++;
 }
 
+$img_file= "./test" . date("H-i-s") . ".png";
 $p = new PHPlot(800, 600);
+
+$p->SetOutputfile($img_file);
+$p->SetFileFormat("png");
+$p->SetPrintImage(0);
+$p->SetIsInline("1");
+
 $p->SetTitle("Normal Distribution :: Mean= " . $mean . " && StDev=  " . $stdev);
 $p->SetDataType('data-data');
 $p->SetDataValues($data);
@@ -81,3 +89,6 @@ $p->SetDrawXGrid(True);
 $p->SetDrawYGrid(True);
 $p->SetPlotType('lines');
 $p->DrawGraph();
+$p->PrintImage();
+chmod($img_file, 777);
+echo "<img src=  '$img_file'  >";
