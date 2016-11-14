@@ -9,7 +9,12 @@ function checkService($para){
 
 function zapisArray($para){
 
+	$conn = new mysqli("localhost", "root", "grad");
+	$sql = "CREATE DATABASE IF NOT EXISTS baza";
+	$conn->query($sql);
 	$conn = new mysqli("localhost", "root", "grad", "baza");
+	$sql = "CREATE TABLE IF NOT EXISTS test(id INT AUTO_INCREMENT PRIMARY KEY,mean FLOAT, stdev FLOAT, broj FLOAT, date TIMESTAMP)";
+        $conn->query($sql);
 	foreach(array_slice($para, 2) as $p){
 		$sql = "INSERT INTO test (mean, stdev, broj) VALUES (". $para[0] .", " . $para[1] . ", " . $p  . ")";
 		$conn->query($sql);
