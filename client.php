@@ -2,6 +2,9 @@
 require_once "nusoap.php";
 require_once "phplot.php";
 
+$stdev = $_GET["stdev"];
+$mean = $_GET["mean"];
+
 $servis1 = new nusoap_client("http://10.30.2.26/service.php?wsdl", true);
 $servis2 = new nusoap_client("http://10.30.2.30/mysql.php?wsdl", true);
 $servis3 = new nusoap_client("http://10.30.2.31/graph.php?wsdl", true);
@@ -11,7 +14,7 @@ if ($error1) {
 	echo "Constructor error: " . $error1 . "\n";
 }
 
-$result = $servis1->call("checkService", array("mean" => rand(0,4), "stdev" => rand(1,15)/10));
+$result = $servis1->call("checkService", array("mean" => $mean, "stdev" => $stdev));
 
 if ($servis1->fault) {
 	echo "Fault: ";
@@ -42,7 +45,7 @@ if ($servis2->fault) {
 	if ($error2) {
 	echo "Error: " . $error2 . "\n";
 	} else {
-		//echo "Status zapisa: " .  $result2 . ". \n";
+		echo "Status zapisa: " .  $result2 . ". \n<br />";
 	}
 }
 
@@ -56,10 +59,11 @@ if ($servis3->fault) {
         if ($error3) {
         echo "Error: " . $error3 . "\n";
         } else {
-                //echo $result3 ;
+                echo "<img src=http://10.30.2.31/" .substr($result3,2)." /img>";
         }
 }
 
+/*
 $mean = $result[0];
 $stdev = $result[1];
 $rez = array_slice($result, 2);
@@ -91,4 +95,4 @@ $p->SetPlotType('lines');
 $p->DrawGraph();
 $p->PrintImage();
 chmod($img_file, 777);
-echo "<img src=  '$img_file'  >";
+echo "<img src=  '$img_file'  >";*/
