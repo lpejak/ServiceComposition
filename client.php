@@ -59,40 +59,6 @@ if ($servis3->fault) {
         if ($error3) {
         echo "Error: " . $error3 . "\n";
         } else {
-                echo "<img src=http://10.30.2.31/" .substr($result3,2)." /img>";
+                echo "<img src=http://10.30.2.31/" . $result3 ." /img>";
         }
 }
-
-/*
-$mean = $result[0];
-$stdev = $result[1];
-$rez = array_slice($result, 2);
-$x=0;
-
-$data = array();
-for($i = -2+$mean; $i<=2+$mean;$i+=0.1){
-	$row = array('',$i);
-	$row[]=$rez[$x];
-	$data[]=$row;
-	$x++;
-}
-
-$img_file= "./test" . date("H-i-s") . ".png";
-$p = new PHPlot(800, 600);
-
-$p->SetOutputfile($img_file);
-$p->SetFileFormat("png");
-$p->SetPrintImage(0);
-$p->SetIsInline("1");
-
-$p->SetTitle("Normal Distribution :: Mean= " . $mean . " && StDev=  " . $stdev);
-$p->SetDataType('data-data');
-$p->SetDataValues($data);
-$p->SetYTickIncrement(0.1);
-$p->SetDrawXGrid(True);
-$p->SetDrawYGrid(True);
-$p->SetPlotType('lines');
-$p->DrawGraph();
-$p->PrintImage();
-chmod($img_file, 777);
-echo "<img src=  '$img_file'  >";*/
