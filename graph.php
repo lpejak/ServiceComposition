@@ -20,7 +20,7 @@ function drawGraph($polje) {
         	$x++;
 	}
 
-	$img_file= "./test" . date("H-i-s") . ".png";
+	$img_file= "slike/test" . date("H-i-s") . ".png";
 	$p = new PHPlot(800, 600);
 
 	$p->SetOutputfile($img_file);
