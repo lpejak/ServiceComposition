@@ -10,9 +10,10 @@ import time
 credentials = get_credentials()
 #Stvaramo ceilometerclient objekt pomocu get_client metode i pokazivaca na credentials objekt koji popunjava potrebne postavke za get_client metodu
 cclient = ceilometerclient.client.get_client(2, **credentials)
+query = [dict(field='timestamp', op='gt', value='2016-11-16T12:00:00Z'), dict(field='timestamp', op='lt', value='2016-11-16T15:30:00Z')]
 while True:
 	#for petlja koja u sample zapisuje list tip podatka koji sadrzi sve podatke o izlaznom bandwithu
-	for sample in cclient.statistics.list('network.outgoing.bytes'):
+	for sample in cclient.statistics.list(meter_name='network.outgoing.bytes', q = query):
 		#Dodjeljujemo pomocnim varijablama vrijednosti iz liste, tj sample.min
 		bwoutmin=sample.min
 		bwoutavg=sample.avg
@@ -27,7 +28,7 @@ while True:
 		bwinsum=sample.sum
 		bwincount=sample.count
 	for sample in cclient.statistics.list('memory'):
-		memoryAvg=sample.avg
+		memoryAvg=sample.max
 	for sample in cclient.statistics.list('memory.usage'):
 		memoryUsageAvg=sample.avg
 	for sample in cclient.statistics.list('cpu'):
@@ -52,7 +53,10 @@ while True:
 	print "CPU average time used:\t\t", cpuAvg/1000000000, "s"
 	print "CPU average utils:\t\t", cpuUtilsAvg, "%"
 	print "VCPUs:\t\t\t\t", vcpusAvg
-
+	query = [dict(field='timestamp', op='gt', value='2016-11-16T12:00:00Z'), dict(field='timestamp', op='lt', value='2016-11-16T15:30:00Z')]
+#	print cclient.statistics.list(meter_name='instance', q = query)
+#	print cclient.samples.list(meter_name ='cpu_util')
+        print cclient.statistics.list(meter_name='instance', q = query)
 
         #sleep komanda pauzira izvodenje na 3 sekunde nakon cega se ponovno izvode dvije for petlje
 	time.sleep(3)
