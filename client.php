@@ -1,6 +1,5 @@
 <?php
 require_once "nusoap.php";
-require_once "phplot.php";
 
 //$stdev = $_GET["stdev"];
 //$mean = $_GET["mean"];
