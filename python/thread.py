@@ -22,8 +22,8 @@ def genTraffic(name, num, k):
 		file.write(stats)
 	file.close()
 
-genTraffic("response-1", 260, 5.0)
-genTraffic("response-2", 900, 2.0)
-genTraffic("response-3", 1440, 0.5)
+genTraffic("case-1", 260, 5.0)
+genTraffic("case-2", 900, 2.0)
+genTraffic("case-3", 1440, 0.5)
 
 print "KRAJ GENERIRANJA"
