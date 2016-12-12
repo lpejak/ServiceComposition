@@ -1,0 +1,8 @@
+na adminu treba imati:
+apt-get install python-heatclient
+
+dodat serviceIP na klijentsku stranu i promijenit program da ucitava iz fajla
+vidjet gdje sve program uzima hardcodiranu ip adresu i promijenit
+u thread.py na administratoru promijenit ip adresu prilikom instalacije
+u ceilo_monitoring.py na administratoru promijenit id-eve prilikom instalacije
+
