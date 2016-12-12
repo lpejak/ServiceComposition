@@ -74,7 +74,7 @@ resources:
             wget --no-check-certificate https://raw.githubusercontent.com/lpejak/ServiceComposition/master/nusoap.php
             wget --no-check-certificate https://raw.githubusercontent.com/lpejak/ServiceComposition/master/phplot.php
             chmod a+rw *
-	    sudo mkdir slike
+            sudo mkdir slike
             chmod 777 slike
             apt-get -y install php5-gd
             sudo service apache2 restart
