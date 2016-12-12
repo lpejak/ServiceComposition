@@ -62,6 +62,8 @@ resources:
             wc_notify: { get_attr: ['wh', 'curl_cli'] }
           template: |
             #!/bin/bash
+            apt-get update
+            apt-get -y upgrade
             sudo debconf-set-selections <<< 'lamp-server^ mysql-server/root_password password grad'
             sudo debconf-set-selections <<< 'lamp-server^ mysql-server/root_password_again password grad'
             apt-get -y install git
