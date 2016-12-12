@@ -1,5 +1,14 @@
 <?php
 require_once "nusoap.php";
+require_once "phplot.php";
+
+$serviceIP = array();
+$lines = file("serviceIP.txt");
+foreach ($lines as $line_num => $line) {
+        array_push($serviceIP, substr($line,0, strlen($line)-1));
+}
+
+print_r($serviceIP);
 
 //$stdev = $_GET["stdev"];
 //$mean = $_GET["mean"];
@@ -7,9 +16,9 @@ require_once "nusoap.php";
 $mean = rand(-5,5);
 $stdev = rand(1,15)/10;
 
-$servis1 = new nusoap_client("http://10.30.2.26/service.php?wsdl", true);
-$servis2 = new nusoap_client("http://10.30.2.30/mysql.php?wsdl", true);
-$servis3 = new nusoap_client("http://10.30.2.31/graph.php?wsdl", true);
+$servis1 = new nusoap_client("http://" . $serviceIP[0] . "/service.php?wsdl", true);
+$servis2 = new nusoap_client("http://" . $serviceIP[1] . "/mysql.php?wsdl", true);
+$servis3 = new nusoap_client("http://" . $serviceIP[2] . "/graph.php?wsdl", true);
 
 
 function microtime_float()
@@ -83,7 +92,7 @@ if ($servis3->fault) {
         if ($error3) {
         echo "Error: " . $error3 . "\n";
         } else {
-               // echo "<img src=http://10.30.2.31/" . $result3 ." /img>";
+//                echo "<img src=http://" . $serviceIP[2] . "/" . $result3 ." /img>";
         }
 }
 
