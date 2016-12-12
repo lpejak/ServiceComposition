@@ -14,28 +14,28 @@ cclient = ceilometerclient.client.get_client(2, **credentials)
 #stvaramo datoteku za zapis metrika
 file = open('metrics.txt', 'a')
 
-#uzimamo vrijednosti id pojedinih instanci
+#vrijednosti id pojedinih instanci
 id1 = '3c420b81-2225-4243-97d4-c27032d4cefb'
 id2 = '59456355-77e0-4a4b-9d29-60a92c9cd396'
 id3 = '87f6a3d3-f635-4876-bdf3-c39c447466eb'
 
 #podesavamo vrijednosti pocetnog i krajnjeg datuma
-hourStart = 13
-hourEnd = 16
-minuteStart = 0
-minuteEnd = 0
+hourStart = 12
+hourEnd = 17
+minuteStart = 00
+minuteEnd = 00
 year = 2016
-month = 11
-day = 28
+month = 12
+day = 7
 #tsStart = '2016-11-28T13:10:00+01:00'
 #tsEnd = '2016-11-28T13:20:00+01:00'
 
 while (hourStart != hourEnd or minuteStart != minuteEnd):
 
 	if minuteStart == 0:
-		tsStart = str(year) + '-' + str(month) + '-' + str(day) +'T' + str(hourStart) + ':' + str(minuteStart) + str(minuteStart) + ':00+01:00'
+		tsStart = str(year) + '-' + str(month) + '-' + str(day) +'T' + str(hourStart) + ':' + str(minuteStart) + str(minuteStart) + ':00Z'
 	else:
-		tsStart = str(year) + '-' + str(month) + '-' + str(day) +'T' + str(hourStart) + ':' + str(minuteStart) + ':00+01:00'
+		tsStart = str(year) + '-' + str(month) + '-' + str(day) +'T' + str(hourStart) + ':' + str(minuteStart) + ':00Z'
 
 	if minuteStart == 50:
 		minuteStart = 0
@@ -44,10 +44,11 @@ while (hourStart != hourEnd or minuteStart != minuteEnd):
 		minuteStart += 10
 
 	if minuteStart == 0:
-		tsEnd = str(year) + '-' + str(month) + '-' + str(day) +'T' + str(hourStart) + ':' + str(minuteStart) + str(minuteStart) + ':00+01:00'
+		tsEnd = str(year) + '-' + str(month) + '-' + str(day) +'T' + str(hourStart) + ':' + str(minuteStart) + str(minuteStart) + ':00Z'
 	else:
-		tsEnd = str(year) + '-' + str(month) + '-' + str(day) +'T' + str(hourStart) + ':' + str(minuteStart) + ':00+01:00'
-
+		tsEnd = str(year) + '-' + str(month) + '-' + str(day) +'T' + str(hourStart) + ':' + str(minuteStart) + ':00Z'
+	print tsStart
+	print tsEnd
 	query1 = [dict(field='resource_id', op='eq', value=id1), dict(field='timestamp', op='ge', value=tsStart), dict(field='timestamp', op='le', value=tsEnd)]
 
 	query2 = [dict(field='resource_id', op='eq', value=id2), dict(field='timestamp', op='ge', value=tsStart), dict(field='timestamp', op='le', value=tsEnd)]
@@ -62,11 +63,11 @@ while (hourStart != hourEnd or minuteStart != minuteEnd):
 #		memoryMax3=sample.max
 
 	for sample in cclient.statistics.list(meter_name = 'memory.usage', q = query1):
-		memoryUsageAvg1 = int(sample.max)
+		memoryUsageAvg1 = int(sample.avg)
 	for sample in cclient.statistics.list(meter_name = 'memory.usage', q = query2):
-		memoryUsageAvg2 = int(sample.max)
+		memoryUsageAvg2 = int(sample.avg)
 	for sample in cclient.statistics.list(meter_name = 'memory.usage', q = query3):
-		memoryUsageAvg3 = int(sample.max)
+		memoryUsageAvg3 = int(sample.avg)
 
 #	for sample in cclient.statistics.list(meter_name = 'cpu', q = query1):
 #		cpuAvg1=sample.avg
@@ -74,7 +75,6 @@ while (hourStart != hourEnd or minuteStart != minuteEnd):
 #		cpuAvg2=sample.avg
 #	for sample in cclient.statistics.list(meter_name = 'cpu', q = query3):
 #		cpuAvg3=sample.avg
-
 	for sample in cclient.statistics.list(meter_name = 'cpu_util', q = query1):
 		cpuUtilsAvg1 = sample.max
 		cpuUtilsAvg1 = float("{0:.2f}".format(cpuUtilsAvg1))
@@ -112,9 +112,8 @@ while (hourStart != hourEnd or minuteStart != minuteEnd):
 	print "Maksimalna iskoristenost - instanca 3:\t\t", memoryUsageAvg3, "MB"
 	print "**************************************************************************"
 
-	stats = tsStart + '\t' + tsEnd + '\t' + str(cpuUtilsAvg1) + '\t' + str(cpuUtilsAvg2) + '\t' + str(cpuUtilsAvg3) + '\t' + str(memoryUsageAvg1) + '\t' + str(memoryUsageAvg2) + '\t' + str(memoryUsageAvg3) + '\n'
+	stats = tsStart + '\t' + tsEnd + '\t' + str(cpuUtilsAvg1) + '\t' + str(cpuUtilsAvg2) + '\t' + str(cpuUtilsAvg3) + '\n'
+#+ str(memoryUsageAvg1) + '\t' + str(memoryUsageAvg2) + '\t' + str(memoryUsageAvg3) + '\n'
 	file.write(stats)
 
 file.close()
-
-
