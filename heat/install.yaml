@@ -42,7 +42,7 @@ resources:
           protocol: tcp
           direction: egress
   client:
-    type: https://raw.githubusercontent.com/lpejak/ServiceComposition/master/skripte/client.py
+    type: https://raw.githubusercontent.com/lpejak/ServiceComposition/master/heat/client.py
     properties:
       image: { get_param: image }
       flavor: { get_param: flavor }
@@ -54,7 +54,7 @@ resources:
       service3_server: { get_attr: [server3, ip] }
       security_group: { get_resource: security_group }
   server1:
-    type: https://raw.githubusercontent.com/lpejak/ServiceComposition/master/skripte/server1.py
+    type: https://raw.githubusercontent.com/lpejak/ServiceComposition/master/heat/server1.py
     properties:
       image: { get_param: image }
       flavor: { get_param: flavor }
@@ -63,7 +63,7 @@ resources:
       public_network: { get_param: public_network }
       security_group: { get_resource: security_group }
   server2:
-    type: https://raw.githubusercontent.com/lpejak/ServiceComposition/master/skripte/server2.py
+    type: https://raw.githubusercontent.com/lpejak/ServiceComposition/master/heat/server2.py
     properties:
       image: { get_param: image }
       flavor: { get_param: flavor }
@@ -72,7 +72,7 @@ resources:
       public_network: { get_param: public_network }
       security_group: { get_resource: security_group }
   server3:
-    type: https://raw.githubusercontent.com/lpejak/ServiceComposition/master/skripte/server3.py
+    type: https://raw.githubusercontent.com/lpejak/ServiceComposition/master/heat/server3.py
     properties:
       image: { get_param: image }
       flavor: { get_param: flavor }
