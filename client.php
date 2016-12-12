@@ -1,6 +1,5 @@
 <?php
 require_once "nusoap.php";
-require_once "phplot.php";
 
 $serviceIP = array();
 $lines = file("serviceIP.txt");
@@ -35,7 +34,7 @@ if ($error1) {
 
 
 $time_start = microtime_float();
-$result = $servis1->call("checkService1", array("mean" => $mean, "stdev" => $stdev));
+$result = $servis1->call("checkService", array("mean" => $mean, "stdev" => $stdev));
 
 if ($servis1->fault) {
 	echo "Fault: ";
