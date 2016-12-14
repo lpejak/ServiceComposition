@@ -47,8 +47,6 @@ resources:
         - port: { get_resource: port }
       user_data_format: RAW
       user_data:
-        str_replace:
-          params:
           template: |
             #!/bin/bash
             cd /var/www/html/
