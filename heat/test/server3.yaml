@@ -29,16 +29,6 @@ parameters:
     description: Name of LAMP security group
 
 resources:
-  wait_condition:
-    type: OS::Heat::WaitCondition
-    properties:
-      handle: { get_resource: wh }
-      count: 1
-      timeout: 3600
-
-  wh:
-    type: OS::Heat::WaitConditionHandle
-
   port:
     type: OS::Neutron::Port
     properties:
@@ -58,8 +48,6 @@ resources:
       user_data_format: RAW
       user_data:
         str_replace:
-          params:
-            wc_notify: { get_attr: ['wh', 'curl_cli'] }
           template: |
             #!/bin/bash
             cd /var/www/html/
@@ -69,8 +57,6 @@ resources:
             wget --no-check-certificate https://raw.githubusercontent.com/lpejak/ServiceComposition/master/nusoap.php
             wget --no-check-certificate https://raw.githubusercontent.com/lpejak/ServiceComposition/master/phplot.php
             chmod a+rw *
-            # notify heat that we are done here
-            wc_notify --data-binary '{"status": "SUCCESS"}'
             
   floating_ip:
     type: OS::Neutron::FloatingIP
@@ -84,9 +70,6 @@ resources:
       port_id: { get_resource: port }
 
 outputs:
-  name:
-    description: Name of the Server 3 instance.
-    value: { get_attr: [server3_instance, name] }
   ip:
     description: The IP address of the Server 3 instance.
     value: { get_attr: [floating_ip, floating_ip_address] }
