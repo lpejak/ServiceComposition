@@ -62,10 +62,6 @@ resources:
             wc_notify: { get_attr: ['wh', 'curl_cli'] }
           template: |
             #!/bin/bash
-            sudo debconf-set-selections <<< 'lamp-server^ mysql-server/root_password password grad'
-            sudo debconf-set-selections <<< 'lamp-server^ mysql-server/root_password_again password grad'
-            apt-get -y install git
-            apt-get -y install lamp-server^
             cd /var/www/html/
             sudo mkdir slike
             wget --no-check-certificate https://raw.githubusercontent.com/lpejak/ServiceComposition/master/rgb.inc.php
@@ -73,8 +69,6 @@ resources:
             wget --no-check-certificate https://raw.githubusercontent.com/lpejak/ServiceComposition/master/nusoap.php
             wget --no-check-certificate https://raw.githubusercontent.com/lpejak/ServiceComposition/master/phplot.php
             chmod a+rw *
-            apt-get -y install php5-gd
-            sudo service apache2 restart
             # notify heat that we are done here
             wc_notify --data-binary '{"status": "SUCCESS"}'
             
