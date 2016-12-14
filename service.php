@@ -1,9 +1,8 @@
 <?php
 require_once "nusoap.php";
 
-$line = fgets(fopen("serviceIP.txt", 'r'));
-
 function calcService($mean, $stdev) {
+	$line = fgets(fopen("serviceIP.txt", 'r'));
 	$time_start = microtime_float();
 	$result = normalDistribution($mean, $stdev);
 	$time_end = microtime_float();

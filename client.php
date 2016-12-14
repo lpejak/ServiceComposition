@@ -43,4 +43,4 @@ if ($servis1->fault) {
 $time_end = microtime_float();
 $time_all = $time_end - $time_start;
 
-echo "\n Total time: " .$time_all . ";";
+echo "\n Total time: " .$time_all . ";\n";

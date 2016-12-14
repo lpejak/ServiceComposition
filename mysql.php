@@ -1,9 +1,8 @@
 <?php
 require_once "nusoap.php";
 
-$line = fgets(fopen("serviceIP.txt", 'r'));
-
 function databaseService($para){
+	$line = fgets(fopen("serviceIP.txt", 'r'));
 	$time_start = microtime_float();
 	zapisArray($para);
 	$time_end = microtime_float();
