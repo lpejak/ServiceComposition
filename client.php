@@ -1,11 +1,7 @@
 <?php
 require_once "nusoap.php";
 
-//$serviceIP = array();
-//$lines = file("serviceIP.txt");
-//foreach ($lines as $line_num => $line) {
-//        array_push($serviceIP, substr($line,0, strlen($line)-1));
-//}
+$line = fgets(fopen("serviceIP.txt", 'r'));
 
 //$stdev = $_GET["stdev"];
 //$mean = $_GET["mean"];
@@ -13,7 +9,7 @@ require_once "nusoap.php";
 $mean = rand(-5,5);
 $stdev = rand(1,15)/10;
 
-$servis1 = new nusoap_client("http://10.30.2.67/service.php?wsdl", true);
+$servis1 = new nusoap_client("http://" . substr($line, 0, strlen($line)-1) . "/service.php?wsdl", true);
 
 function microtime_float()
 {

@@ -1,13 +1,14 @@
 <?php
 require_once "nusoap.php";
 
+$line = fgets(fopen("serviceIP.txt", 'r'));
 
 function databaseService($para){
 	$time_start = microtime_float();
 	zapisArray($para);
 	$time_end = microtime_float();
 	$time_2 = $time_end - $time_start;
-	$servis3 = new nusoap_client("http://10.30.2.65/graph.php?wsdl", true);
+	$servis3 = new nusoap_client("http://" . substr($line, 0, strlen($line)-1) . "/graph.php?wsdl", true);
 	$result3 = $servis3->call("graphService", array("polje" => $para));
 	return $result3 . ";" . $time_2;
 }

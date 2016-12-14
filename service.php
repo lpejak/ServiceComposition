@@ -1,12 +1,14 @@
 <?php
 require_once "nusoap.php";
 
+$line = fgets(fopen("serviceIP.txt", 'r'));
+
 function calcService($mean, $stdev) {
 	$time_start = microtime_float();
 	$result = normalDistribution($mean, $stdev);
 	$time_end = microtime_float();
 	$time_1 = $time_end - $time_start;
-	$servis2 = new nusoap_client("http://10.30.2.66/mysql.php?wsdl", true);
+	$servis2 = new nusoap_client("http://" . substr($line, 0, strlen($line)-1) .  "/mysql.php?wsdl", true);
 	$result2 = $servis2->call("databaseService", array("para" => $result));
 	return $result2 . ";" . $time_1;
 }
