@@ -1,13 +1,11 @@
 <?php
 require_once "nusoap.php";
 
-$serviceIP = array();
-$lines = file("serviceIP.txt");
-foreach ($lines as $line_num => $line) {
-        array_push($serviceIP, substr($line,0, strlen($line)-1));
-}
-
-print_r($serviceIP);
+//$serviceIP = array();
+//$lines = file("serviceIP.txt");
+//foreach ($lines as $line_num => $line) {
+//        array_push($serviceIP, substr($line,0, strlen($line)-1));
+//}
 
 //$stdev = $_GET["stdev"];
 //$mean = $_GET["mean"];
@@ -15,10 +13,7 @@ print_r($serviceIP);
 $mean = rand(-5,5);
 $stdev = rand(1,15)/10;
 
-$servis1 = new nusoap_client("http://" . $serviceIP[0] . "/service.php?wsdl", true);
-$servis2 = new nusoap_client("http://" . $serviceIP[1] . "/mysql.php?wsdl", true);
-$servis3 = new nusoap_client("http://" . $serviceIP[2] . "/graph.php?wsdl", true);
-
+$servis1 = new nusoap_client("http://10.30.2.67/service.php?wsdl", true);
 
 function microtime_float()
 {
@@ -34,7 +29,7 @@ if ($error1) {
 
 
 $time_start = microtime_float();
-$result = $servis1->call("checkService", array("mean" => $mean, "stdev" => $stdev));
+$result = $servis1->call("calcService", array("mean" => $mean, "stdev" => $stdev));
 
 if ($servis1->fault) {
 	echo "Fault: ";
@@ -44,59 +39,12 @@ if ($servis1->fault) {
 	if ($error1) {
 		echo "Error: " . $error1 . "\n";
 	} else {
-		//echo implode("\n",$result);
+		echo $result;
+		//echo "<img src=http://10.30.2.65/" . $result ." /img>";
 		//echo "\n";
 	}
 }
 $time_end = microtime_float();
-$time = $time_end - $time_start;
+$time_all = $time_end - $time_start;
 
-echo $time . ";";
-
-$error2 = $servis2->getError();
-if ($error2) {
-	echo "Constructor error: " . $error2 . "\n";
-}
-
-
-$time_start = microtime_float();
-$result2 = $servis2->call("checkService", array("para" => $result));
-
-if ($servis2->fault) {
-	echo "Fault: ";
-	print_r($result2);
-} else {
-	$error2 = $servis2->getError();
-	if ($error2) {
-	echo "Error: " . $error2 . "\n";
-	} else {
-	//	echo "Status zapisa: " .  $result2 . ". \n<br />";
-	}
-}
-
-$time_end = microtime_float();
-$time = $time_end - $time_start;
-
-echo $time . ";";
-
-
-$time_start = microtime_float();
-$result3 = $servis3->call("checkService", array("polje" => $result));
-
-if ($servis3->fault) {
-        echo "Fault: ";
-        print_r($result3);
-} else {
-        $error3 = $servis3->getError();
-        if ($error3) {
-        echo "Error: " . $error3 . "\n";
-        } else {
-//                echo "<img src=http://" . $serviceIP[2] . "/" . $result3 ." /img>";
-        }
-}
-
-$time_end = microtime_float();
-$time = $time_end - $time_start;
-
-echo $time . ";";
-
+echo "\n Total time: " .$time_all . ";";

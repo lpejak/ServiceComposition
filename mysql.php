@@ -2,9 +2,20 @@
 require_once "nusoap.php";
 
 
-function checkService($para){
+function databaseService($para){
+	$time_start = microtime_float();
 	zapisArray($para);
-	return 1;
+	$time_end = microtime_float();
+	$time_2 = $time_end - $time_start;
+	$servis3 = new nusoap_client("http://10.30.2.65/graph.php?wsdl", true);
+	$result3 = $servis3->call("graphService", array("polje" => $para));
+	return $result3 . ";" . $time_2;
+}
+
+function microtime_float()
+{
+    list($usec, $sec) = explode(" ", microtime());
+    return ((float)$usec + (float)$sec);
 }
 
 function zapisArray($para){
@@ -36,11 +47,11 @@ $server->wsdl->addComplexType(
 	array(array("ref"=>"SOAP-ENC:arrayType","wsdl:arrayType"=>"xsd:string[]")),
         "xsd:string");
 
-$server->register("checkService",
+$server->register("databaseService",
     array("para" => "tns:randArray"),
     array("return" => "xsd:string"),
     "urn:status",
-    "urn:status#checkService",
+    "urn:status#databaseService",
     "rpc",
     "encoded",
     "Check if service is working by passing your name");

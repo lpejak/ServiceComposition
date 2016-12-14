@@ -2,8 +2,18 @@
 require_once "nusoap.php";
 require_once "phplot.php";
 
-function checkService($polje) {
-        return drawGraph($polje);
+function graphService($polje) {
+	$time_start = microtime_float();
+        $x = drawGraph($polje);
+	$time_end = microtime_float();
+	$time_3 = $time_end - $time_start;
+	return $x . ";" . $time_3;
+}
+
+function microtime_float()
+{
+    list($usec, $sec) = explode(" ", microtime());
+    return ((float)$usec + (float)$sec);
 }
 
 function drawGraph($polje) {
@@ -54,11 +64,11 @@ $server->wsdl->addComplexType(
         array(array("ref"=>"SOAP-ENC:arrayType","wsdl:arrayType"=>"xsd:string[]")),
         "xsd:string");
 
-$server->register("checkService",
+$server->register("graphService",
     array("polje" => "tns:randArray"),
     array("return" => "xsd:string"),
     "urn:status",
-    "urn:status#checkService",
+    "urn:status#graphService",
     "rpc",
     "encoded",
     "Check if service is working by passing your name");

@@ -1,8 +1,20 @@
 <?php
 require_once "nusoap.php";
 
-function checkService($mean, $stdev) {
-	return normalDistribution($mean, $stdev);
+function calcService($mean, $stdev) {
+	$time_start = microtime_float();
+	$result = normalDistribution($mean, $stdev);
+	$time_end = microtime_float();
+	$time_1 = $time_end - $time_start;
+	$servis2 = new nusoap_client("http://10.30.2.66/mysql.php?wsdl", true);
+	$result2 = $servis2->call("databaseService", array("para" => $result));
+	return $result2 . ";" . $time_1;
+}
+
+function microtime_float()
+{
+    list($usec, $sec) = explode(" ", microtime());
+    return ((float)$usec + (float)$sec);
 }
 
 function normalDistribution($mean, $stdev) {
@@ -29,11 +41,11 @@ $server->wsdl->addComplexType(
 	array(array("ref"=>"SOAP-ENC:arrayType","wsdl:arrayType"=>"xsd:string[]")),
         "xsd:string");
 
-$server->register("checkService",
+$server->register("calcService",
     array("mean" => "xsd:float", "stdev" => "xsd:float"),
-    array("return" => "tns:floatArray"),
+    array("return" => "xsd:string"),
     "urn:status",
-    "urn:status#checkService",
+    "urn:status#calcService",
     "rpc",
     "encoded",
     "Check if service is working by passing your name");
