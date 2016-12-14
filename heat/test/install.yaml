@@ -61,18 +61,6 @@ resources:
           direction: egress
         - protocol: icmp
           direction: ingress
-  client:
-    type: https://raw.githubusercontent.com/lpejak/ServiceComposition/master/heat/test/client.yaml
-    properties:
-      image: { get_param: image }
-      flavor: { get_param: flavor }
-      key: { get_param: key }
-      private_network: { get_param: private_network }
-      public_network: { get_param: public_network }
-      service1_server: { get_attr: [server1, ip] }
-      service2_server: { get_attr: [server2, ip] }
-      service3_server: { get_attr: [server3, ip] }
-      security_group: { get_resource: security_group }
   server1:
     type: https://raw.githubusercontent.com/lpejak/ServiceComposition/master/heat/test/server1.yaml
     properties:
@@ -81,6 +69,7 @@ resources:
       key: { get_param: key }
       private_network: { get_param: private_network }
       public_network: { get_param: public_network }
+      service2_server: { get_attr: [server2, ip] }
       security_group: { get_resource: security_group }
   server2:
     type: https://raw.githubusercontent.com/lpejak/ServiceComposition/master/heat/test/server2.yaml
@@ -90,6 +79,7 @@ resources:
       key: { get_param: key }
       private_network: { get_param: private_network }
       public_network: { get_param: public_network }
+      service3_server: { get_attr: [server3, ip] }
       security_group: { get_resource: security_group }
   server3:
     type: https://raw.githubusercontent.com/lpejak/ServiceComposition/master/heat/test/server3.yaml
