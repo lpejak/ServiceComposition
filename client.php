@@ -20,27 +20,33 @@ function microtime_float()
 
 $error1 = $servis1->getError();
 if ($error1) {
-	echo "Constructor error: " . $error1 . "\n";
+        echo "Constructor error: " . $error1 . "\n";
 }
 
 
 $time_start = microtime_float();
 $result = $servis1->call("calcService", array("mean" => $mean, "stdev" => $stdev));
-
-if ($servis1->fault) {
-	echo "Fault: ";
-	print_r($result);
-} else {
-	$error1 = $servis1->getError();
-	if ($error1) {
-		echo "Error: " . $error1 . "\n";
-	} else {
-		echo $result;
-		//echo "<img src=http://10.30.2.65/" . $result ." /img>";
-		//echo "\n";
-	}
-}
 $time_end = microtime_float();
 $time_all = $time_end - $time_start;
 
-echo "\n Total time: " .$time_all . ";\n";
+if ($servis1->fault) {
+        echo "Fault: ";
+        print_r($result);
+} else {
+        $error1 = $servis1->getError();
+        if ($error1) {
+                echo "Error: " . $error1 . "\n";
+        } else {
+                //echo $result . '<br>';
+                //echo "<img src=http://10.30.2.65/" . $result ." /img>";
+                //echo "\n";
+        }
+}
+
+$temp = explode(";", $result);
+//echo "Slika: " . $temp[0] . "<br>";
+//echo "Servis3: " . $temp[1] . "<br>";
+//echo "Servis2: " . ($temp[2]-$temp[1]) . "<br>";
+//echo "Servis1: " . ($time_all-$temp[2]) . "<br>";
+//echo "Total time: " .$time_all . ";";
+echo $temp[1] . ";" . ($temp[2]-$temp[1]) . ";" . ($time_all-$temp[2]) . ";" . $time_all;

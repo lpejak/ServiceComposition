@@ -2,14 +2,14 @@
 require_once "nusoap.php";
 
 function calcService($mean, $stdev) {
-	$line = fgets(fopen("serviceIP.txt", 'r'));
-	$time_start = microtime_float();
-	$result = normalDistribution($mean, $stdev);
-	$time_end = microtime_float();
-	$time_1 = $time_end - $time_start;
-	$servis2 = new nusoap_client("http://" . substr($line, 0, strlen($line)-1) .  "/mysql.php?wsdl", true);
-	$result2 = $servis2->call("databaseService", array("para" => $result));
-	return $result2 . ";" . $time_1;
+        $line = fgets(fopen("serviceIP.txt", 'r'));
+        $result = normalDistribution($mean, $stdev);
+        $servis2 = new nusoap_client("http://" . substr($line, 0, strlen($line)-1) .  "/mysql.php?wsdl", true);
+        $time_start = microtime_float();
+        $result2 = $servis2->call("databaseService", array("para" => $result));
+        $time_end = microtime_float();
+        $time_2 = $time_end - $time_start;
+        return $result2 . ";" . $time_2;
 }
 
 function microtime_float()
@@ -19,14 +19,14 @@ function microtime_float()
 }
 
 function normalDistribution($mean, $stdev) {
-	$pre = 1/($stdev*sqrt(2*pi()));
-	$ukupno = array();
-	$ukupno[] = $mean;
-	$ukupno[] = $stdev;
-	for ($i = -2+$mean; $i <= 2+$mean; $i+=0.1) {
-		$ukupno[] = $pre * exp(-pow($i-$mean,2)/(2*pow($stdev,2)));
-	}
-	return $ukupno;
+        $pre = 1/($stdev*sqrt(2*pi()));
+        $ukupno = array();
+        $ukupno[] = $mean;
+        $ukupno[] = $stdev;
+        for ($i = -2+$mean; $i <= 2+$mean; $i+=0.1) {
+                $ukupno[] = $pre * exp(-pow($i-$mean,2)/(2*pow($stdev,2)));
+        }
+        return $ukupno;
 }
 
 $server = new soap_server();
