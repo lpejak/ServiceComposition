@@ -3,17 +3,8 @@ require_once "nusoap.php";
 require_once "phplot.php";
 
 function graphService($polje) {
-	$time_start = microtime_float();
         $x = drawGraph($polje);
-	$time_end = microtime_float();
-	$time_3 = $time_end - $time_start;
-	return $x . ";" . $time_3;
-}
-
-function microtime_float()
-{
-    list($usec, $sec) = explode(" ", microtime());
-    return ((float)$usec + (float)$sec);
+	return $x;
 }
 
 function drawGraph($polje) {
@@ -30,7 +21,7 @@ function drawGraph($polje) {
         	$x++;
 	}
 
-	$img_file= "slike/test" . date("H-i-s") . "-" . rand(100,999) .".png";
+	$img_file= "slike/test" . date("H-i-s") . "-" . rand(10000,99999) .".png";
 	$p = new PHPlot(800, 600);
 
 	$p->SetOutputfile($img_file);
