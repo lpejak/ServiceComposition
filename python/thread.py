@@ -1,10 +1,19 @@
 #!/usr/bin/python
 
 import time
+import thread
 import requests
 import math
 import random
 from datetime import datetime
+
+
+
+def funkcija(file, count, name, koef):
+	r = requests.get('http://localhost/client.php?')
+	stats = str(koef) + ";" + r.text + "\n"
+	print name, "-", count," || Value: ",stats,"\n"
+	file.write(stats)
 
 def genTraffic(name, num, k):
 	file = open( name + '.txt', 'a')
@@ -13,17 +22,16 @@ def genTraffic(name, num, k):
 		pp = random.expovariate(1/k)
 		time.sleep(pp)
 		count += 1
-		a= datetime.now()
-		r=requests.get('http://10.30.2.27/client.php')
-		b= datetime.now()
-		c= b-a
-		print name, "-", count," || Value: ",pp, " Start: ",a, " End: "  ,b," Diff: ",c," || ", r.text,"\n"
-		stats = str(c) + ";" + r.text + "\n"
-		file.write(stats)
-	file.close()
+		try:
+			thread.start_new_thread(funkcija, (file, count, name, pp))
+		except:
+			print "ne radi"		
+		print name, "-", count," || STARTED\n"
+	time.sleep(5)
+		
 
-genTraffic("case-1", 260, 5.0)
-genTraffic("case-2", 900, 2.0)
-genTraffic("case-3", 1440, 0.5)
+genTraffic("case-1", 1800, 1.0)
+genTraffic("case-2", 3600, 0.5)
+genTraffic("case-3", 100, 0.1)
 
 print "KRAJ GENERIRANJA"
